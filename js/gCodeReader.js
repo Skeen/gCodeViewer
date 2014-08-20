@@ -185,6 +185,27 @@ GCODE.gCodeReader = (function(){
 // ***** PUBLIC *******
     return {
 
+        loadFile2: function(content){
+            model = [];
+            z_heights = [];
+            detectSlicer(content);
+            lines = content.split(/\n/);
+            content = null;
+//            prepareGCode();
+
+            GCODE.ui.worker.postMessage({
+                    "cmd":"parseGCode",
+                    "msg":{
+                        gcode: lines,
+                        options: {
+                            firstReport: 5
+                        }
+                    }
+                }
+            );
+            delete lines;
+        },
+
         loadFile: function(reader){
 //            console.log("loadFile");
             model = [];
