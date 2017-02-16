@@ -1,4 +1,4 @@
 gCodeVisualizer - a web-based visual gcode viewer and analyzer.
-Available online at http://gcode.ws/
+Available online at http://www.cs.au.dk/~skeen/gCodeViewer/
 
 This branch holds a modifications which adds a JavaScript slicer.
