@@ -185,13 +185,13 @@ GCODE.gCodeReader = (function(){
 // ***** PUBLIC *******
     return {
 
-        loadFile: function(reader){
+        loadFile: function(result){
 //            console.log("loadFile");
             model = [];
             z_heights = [];
-            detectSlicer(reader.target.result);
-            lines = reader.target.result.split(/\n/);
-            reader.target.result = null;
+            detectSlicer(result);
+            lines = result.split(/\n/);
+            result = null;
 //            prepareGCode();
 
             GCODE.ui.worker.postMessage({

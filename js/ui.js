@@ -179,10 +179,16 @@ GCODE.ui = (function(){
 
         var files = evt.dataTransfer?evt.dataTransfer.files:evt.target.files; // FileList object.
 
+        var stl = false;
         var output = [];
         for (var i = 0, f; f = files[i]; i++) {
             if(f.name.toLowerCase().match(/^.*\.(?:gcode|g|txt|gco)$/)){
                 output.push('<li>File extensions suggests GCODE</li>');
+                console.log('File extensions suggests GCODE');
+            }else if(f.name.toLowerCase().match(/^.*\.stl$/)) {
+                output.push('<li>File extensions suggests STL</li>');
+                console.log("File extensions suggest STL");
+                stl = true;
             }else{
                 output.push('<li><strong>You should only upload *.gcode files! I will not work with this one!</strong></li>');
                 document.getElementById('errorList').innerHTML = '<ul>' + output.join('') + '</ul>';
@@ -191,17 +197,22 @@ GCODE.ui = (function(){
 
             reader = new FileReader();
             reader.onload = function(theFile){
+                var gcode = theFile.target.result;
+                if(stl)
+                {
+                    console.log("Browser will hang while slicing!");
+                    gcode = GCODE.slice(gcode);
+                }
                 chooseAccordion('progressAccordionTab');
                 setProgress('loadProgress', 0);
                 setProgress('analyzeProgress', 0);
 //                myCodeMirror.setValue(theFile.target.result);
-                GCODE.gCodeReader.loadFile(theFile);
+                GCODE.gCodeReader.loadFile(gcode);
                 if(showGCode){
-                    myCodeMirror.setValue(theFile.target.result);
+                    myCodeMirror.setValue(gcode);
                 }else{
                     myCodeMirror.setValue("GCode view is disabled. You can enable it in 'GCode analyzer options' section.")
                 }
-
             };
             reader.readAsText(f);
         }
